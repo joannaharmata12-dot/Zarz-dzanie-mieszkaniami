@@ -11,13 +11,13 @@ export const seedProfiles: Profile[] = [
   { id: "u-res-1", full_name: "Anna Kowalska", email: "anna@test.pl", role: "resident", created_at: daysAgo(120) },
   { id: "u-res-2", full_name: "Piotr Nowak", email: "piotr@test.pl", role: "resident", created_at: daysAgo(80) },
   { id: "u-res-3", full_name: "Magdalena Zielińska", email: "magda@test.pl", role: "resident", created_at: daysAgo(60) },
-  { id: "u-mgr-1", full_name: "Tomasz Wiśniewski", email: "tomasz@propertycare.pl", role: "manager", created_at: daysAgo(300) },
-  { id: "u-tech-1", full_name: "FixIT Serwis Sp. z o.o.", email: "kontakt@fixit.pl", role: "technical", created_at: daysAgo(200) },
-  { id: "u-clean-1", full_name: "CleanPro Sprzątanie", email: "biuro@cleanpro.pl", role: "cleaning", created_at: daysAgo(200) },
+  { id: "u-mgr-1", full_name: "Jan Nowak", email: "jan.nowak@propertycare.pl", role: "manager", created_at: daysAgo(300) },
+  { id: "u-tech-1", full_name: "TechFix", email: "kontakt@techfix.pl", role: "technical", created_at: daysAgo(200) },
+  { id: "u-clean-1", full_name: "CleanHome", email: "biuro@cleanhome.pl", role: "cleaning", created_at: daysAgo(200) },
 ];
 
 export const seedApartments: Apartment[] = [
-  { id: "a-1", address: "ul. Marszałkowska 12", apartment_number: "15", city: "Warszawa", status: "wynajęte", resident_id: "u-res-1", manager_id: "u-mgr-1", created_at: daysAgo(300) },
+  { id: "a-1", address: "ul. Kwiatowa 12", apartment_number: "5", city: "Kraków", status: "wynajęte", resident_id: "u-res-1", manager_id: "u-mgr-1", created_at: daysAgo(300) },
   { id: "a-2", address: "ul. Krakowskie Przedmieście 5", apartment_number: "3A", city: "Warszawa", status: "wynajęte", resident_id: "u-res-2", manager_id: "u-mgr-1", created_at: daysAgo(250) },
   { id: "a-3", address: "ul. Floriańska 22", apartment_number: "7", city: "Kraków", status: "wynajęte", resident_id: "u-res-3", manager_id: "u-mgr-1", created_at: daysAgo(180) },
   { id: "a-4", address: "ul. Długa 44", apartment_number: "11", city: "Gdańsk", status: "dostępne", resident_id: null, manager_id: "u-mgr-1", created_at: daysAgo(90) },
