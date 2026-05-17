@@ -17,7 +17,7 @@ interface State {
   cleaning: CleaningOrder[];
 }
 
-const STORAGE_KEY = "propertycare-state-v1";
+const STORAGE_KEY = "propertycare-state-v2";
 const ROLE_KEY = "propertycare-role";
 const USER_KEY = "propertycare-user";
 
