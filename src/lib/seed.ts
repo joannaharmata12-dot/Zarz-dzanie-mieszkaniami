@@ -91,8 +91,8 @@ export const seedLeases: Lease[] = [
 ];
 
 export const seedVisits: Visit[] = [
-  { id: "v-1", apartment_id: "a-1", manager_id: "u-mgr-1", resident_id: "u-res-1", date: daysAhead(10), time: "10:00", purpose: "Przegląd techniczny", inspector: "Tomasz Wiśniewski", status: "zaplanowana", alternative_date: null, created_at: daysAgo(2) },
-  { id: "v-2", apartment_id: "a-2", manager_id: "u-mgr-1", resident_id: "u-res-2", date: daysAhead(-5), time: "14:00", purpose: "Kontrola stanu mieszkania", inspector: "Tomasz Wiśniewski", status: "zrealizowana", alternative_date: null, created_at: daysAgo(20) },
+  { id: "v-1", apartment_id: "a-1", manager_id: "u-mgr-1", resident_id: "u-res-1", date: daysAhead(10), time: "10:00", purpose: "Wizyta kontrolna – stan techniczny mieszkania", inspector: "Jan Nowak", status: "zaplanowana", alternative_date: null, created_at: daysAgo(2) },
+  { id: "v-2", apartment_id: "a-2", manager_id: "u-mgr-1", resident_id: "u-res-2", date: daysAhead(-5), time: "14:00", purpose: "Kontrola stanu mieszkania", inspector: "Jan Nowak", status: "zrealizowana", alternative_date: null, created_at: daysAgo(20) },
 ];
 
 export const seedCleaning: CleaningOrder[] = [
