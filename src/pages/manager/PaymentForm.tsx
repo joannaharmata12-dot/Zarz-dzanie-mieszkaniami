@@ -24,16 +24,23 @@ export default function PaymentForm() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const apt = state.apartments.find(a => a.id === apartmentId);
-    if (!apt || !apt.resident_id || !amount || !dueDate || !description) { toast.error("Uzupełnij wymagane pola (mieszkanie musi mieć przypisanego mieszkańca)"); return; }
+    const errs: string[] = [];
+    if (!apt) errs.push("mieszkanie");
+    else if (!apt.resident_id) errs.push("mieszkaniec (przypisz go do mieszkania)");
+    const amt = parseFloat(amount);
+    if (!amount || isNaN(amt) || amt <= 0) errs.push("kwota");
+    if (!dueDate) errs.push("termin");
+    if (!description.trim()) errs.push("opis");
+    if (errs.length || !apt || !apt.resident_id) { toast.error("Uzupełnij wymagane pola: " + errs.join(", ")); return; }
     setState(s => ({
       ...s,
       payments: [{
         id: uid(), apartment_id: apt.id, resident_id: apt.resident_id!,
-        amount: parseFloat(amount), due_date: dueDate, status, description,
+        amount: amt, due_date: dueDate, status, description,
         created_at: new Date().toISOString(),
       }, ...s.payments],
     }));
-    notify(setState, apt.resident_id, "Nowa płatność", `Dodano płatność: ${description} (${amount} zł)`, "payment");
+    notify(setState, apt.resident_id, "Nowa płatność", `Dodano płatność: ${description} (${amt} zł)`, "payment");
     toast.success("Dodano płatność");
     nav("/manager/payments");
   };

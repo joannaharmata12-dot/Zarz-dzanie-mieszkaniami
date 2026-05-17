@@ -6,9 +6,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Home, ClipboardList, Building2, Wrench, CreditCard, FileText, CalendarCheck,
-  Bell, Sparkles, LogOut, RotateCcw, Plus,
+  Bell, Sparkles, LogOut, RotateCcw, Plus, Info,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const aboutItem = { to: "/about", icon: Info, label: "O systemie" };
 
 const navByRole = {
   resident: [
@@ -19,6 +21,7 @@ const navByRole = {
     { to: "/resident/lease", icon: FileText, label: "Umowa najmu" },
     { to: "/resident/visits", icon: CalendarCheck, label: "Wizyty" },
     { to: "/notifications", icon: Bell, label: "Powiadomienia" },
+    aboutItem,
   ],
   manager: [
     { to: "/manager", icon: Home, label: "Dashboard" },
@@ -27,14 +30,17 @@ const navByRole = {
     { to: "/manager/payments", icon: CreditCard, label: "Płatności" },
     { to: "/manager/visits", icon: CalendarCheck, label: "Wizyty kontrolne" },
     { to: "/notifications", icon: Bell, label: "Powiadomienia" },
+    aboutItem,
   ],
   technical: [
     { to: "/technical", icon: Wrench, label: "Przypisane zgłoszenia" },
     { to: "/notifications", icon: Bell, label: "Powiadomienia" },
+    aboutItem,
   ],
   cleaning: [
     { to: "/cleaning", icon: Sparkles, label: "Zlecenia sprzątania" },
     { to: "/notifications", icon: Bell, label: "Powiadomienia" },
+    aboutItem,
   ],
 } as const;
 

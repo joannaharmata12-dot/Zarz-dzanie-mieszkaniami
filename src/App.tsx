@@ -29,6 +29,7 @@ import CleaningPanel from "@/pages/cleaning/Panel";
 import RequestsList from "@/components/RequestsList";
 import RequestDetail from "@/pages/RequestDetail";
 import Notifications from "@/pages/Notifications";
+import About from "@/pages/About";
 
 const queryClient = new QueryClient();
 
@@ -81,6 +82,7 @@ const App = () => (
               <Route path="/cleaning" element={<CleaningPanel />} />
 
               <Route path="/notifications" element={<Notifications />} />
+              <Route path="/about" element={<About />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />
