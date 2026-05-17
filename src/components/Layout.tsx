@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Home, ClipboardList, Building2, Wrench, CreditCard, FileText, CalendarCheck,
-  Bell, Sparkles, LogOut, RotateCcw, Plus, Info,
+  Bell, Sparkles, LogOut, RotateCcw, Plus, Info, User2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +26,7 @@ const navByRole = {
   manager: [
     { to: "/manager", icon: Home, label: "Dashboard" },
     { to: "/manager/apartments", icon: Building2, label: "Mieszkania" },
+    { to: "/manager/residents", icon: User2, label: "Mieszkańcy" },
     { to: "/manager/requests", icon: ClipboardList, label: "Zgłoszenia" },
     { to: "/manager/payments", icon: CreditCard, label: "Płatności" },
     { to: "/manager/visits", icon: CalendarCheck, label: "Wizyty kontrolne" },
