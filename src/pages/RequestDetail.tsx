@@ -156,8 +156,8 @@ export default function RequestDetail() {
                 {new Date(h.at).toLocaleString("pl-PL")}
               </div>
               <div className="flex items-center gap-2 flex-wrap">
-                {h.from && <><StatusBadge value={h.from} /><span className="text-muted-foreground">→</span></>}
-                <StatusBadge value={h.to} />
+                {h.from && <><StatusBadge value={h.from as RequestStatus} /><span className="text-muted-foreground">→</span></>}
+                <StatusBadge value={h.to as RequestStatus} />
               </div>
               <div className="text-muted-foreground">
                 {h.by_name} <span className="text-xs">({ROLE_LABEL[h.by_role]})</span>
