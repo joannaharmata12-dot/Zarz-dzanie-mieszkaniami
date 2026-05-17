@@ -1,14 +1,15 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useStore, notify } from "@/lib/store";
-import type { RequestStatus, Profile } from "@/lib/types";
+import { ROLE_LABEL, type RequestStatus, type StatusChange } from "@/lib/types";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PriorityBadge, StatusBadge } from "@/components/Badges";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Archive, History } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -24,8 +25,9 @@ export default function RequestDetail() {
   const resident = state.profiles.find(p => p.id === req.resident_id);
   const company = state.profiles.find(p => p.id === req.assigned_company_id || "");
   const companies = state.profiles.filter(p => p.role === "technical");
+  const me = state.profiles.find(p => p.id === userId);
 
-  const [statusVal, setStatusVal] = useState(req.status);
+  const [statusVal, setStatusVal] = useState<RequestStatus>(req.status);
   const [companyId, setCompanyId] = useState<string>(req.assigned_company_id || "");
   const [scheduled, setScheduled] = useState(req.scheduled_date?.slice(0, 10) || "");
   const [note, setNote] = useState(req.tech_note || "");
@@ -33,10 +35,19 @@ export default function RequestDetail() {
   const canManage = role === "manager";
   const canTech = role === "technical" && req.assigned_company_id === userId;
 
-  const updateRequest = (patch: Partial<typeof req>, message: string) => {
+  const applyChange = (patch: Partial<typeof req>, message: string, newStatus?: RequestStatus, noteText?: string) => {
+    const now = new Date().toISOString();
+    const history = [...(req.status_history || [])];
+    if (newStatus && newStatus !== req.status) {
+      history.push({
+        at: now, from: req.status, to: newStatus,
+        by_role: role!, by_name: me?.full_name || ROLE_LABEL[role!],
+        note: noteText,
+      });
+    }
     setState(s => ({
       ...s,
-      requests: s.requests.map(r => r.id === req.id ? { ...r, ...patch, updated_at: new Date().toISOString() } : r),
+      requests: s.requests.map(r => r.id === req.id ? { ...r, ...patch, status_history: history, updated_at: now } : r),
     }));
     notify(setState, req.resident_id, "Aktualizacja zgłoszenia", `${req.number}: ${message}`, "request");
     toast.success("Zapisano");
@@ -44,22 +55,24 @@ export default function RequestDetail() {
 
   const saveManager = () => {
     const patch: any = { status: statusVal, assigned_company_id: companyId || null };
+    let noteText: string | undefined;
     if (companyId && companyId !== req.assigned_company_id) {
       const comp = companies.find(c => c.id === companyId);
       if (comp) {
         notify(setState, comp.id, "Przypisano zgłoszenie", `Przypisano zgłoszenie ${req.number}: ${req.title}`, "assignment");
         if (statusVal === "nowe") patch.status = "przypisane";
+        noteText = `Przypisano ${comp.full_name}`;
       }
     }
-    updateRequest(patch, `status: ${patch.status}`);
+    applyChange(patch, `status: ${patch.status}`, patch.status, noteText);
   };
 
   const saveTech = () => {
-    updateRequest({
+    applyChange({
       status: statusVal,
       scheduled_date: scheduled ? new Date(scheduled).toISOString() : null,
       tech_note: note || null,
-    }, `${statusVal}${scheduled ? ` · termin ${new Date(scheduled).toLocaleDateString("pl-PL")}` : ""}`);
+    }, `${statusVal}${scheduled ? ` · termin ${new Date(scheduled).toLocaleDateString("pl-PL")}` : ""}`, statusVal, note || undefined);
     if (statusVal === "zakończone") {
       setState(s => ({
         ...s,
@@ -70,8 +83,15 @@ export default function RequestDetail() {
           assigned_person: company?.full_name || null, created_at: new Date().toISOString(),
         }, ...s.techEntries],
       }));
+      toast.success("Wpis dodany do historii technicznej mieszkania");
     }
   };
+
+  const archive = () => {
+    applyChange({ status: "archiwalne" }, "przeniesiono do archiwum", "archiwalne", "Archiwizacja");
+  };
+
+  const canArchive = canManage && (req.status === "zakończone" || req.status === "anulowane");
 
   return (
     <div className="space-y-6 max-w-5xl">
@@ -81,8 +101,12 @@ export default function RequestDetail() {
         <div>
           <div className="text-sm font-mono text-muted-foreground">{req.number}</div>
           <h1 className="text-3xl font-bold">{req.title}</h1>
-          <div className="text-sm text-muted-foreground mt-1">
-            Utworzono {new Date(req.created_at).toLocaleString("pl-PL")} · źródło: {req.source === "resident" ? "mieszkaniec" : "zarządca"}
+          <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2 flex-wrap">
+            <span>Utworzono {new Date(req.created_at).toLocaleString("pl-PL")}</span>
+            <span>·</span>
+            <Badge variant="outline" className="text-xs">
+              Źródło: {req.source === "resident" ? "mieszkaniec" : "ręczne (zarządca)"}
+            </Badge>
           </div>
         </div>
         <div className="flex gap-2">
@@ -120,6 +144,33 @@ export default function RequestDetail() {
         </Card>
       </div>
 
+      <Card className="p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <History className="h-4 w-4 text-accent" />
+          <h3 className="font-bold">Historia statusów</h3>
+        </div>
+        <ol className="space-y-3">
+          {(req.status_history || []).map((h: StatusChange, idx) => (
+            <li key={idx} className="flex flex-wrap items-start gap-3 text-sm border-l-2 border-accent/40 pl-4">
+              <div className="text-xs text-muted-foreground w-40 shrink-0">
+                {new Date(h.at).toLocaleString("pl-PL")}
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                {h.from && <><StatusBadge value={h.from} /><span className="text-muted-foreground">→</span></>}
+                <StatusBadge value={h.to} />
+              </div>
+              <div className="text-muted-foreground">
+                {h.by_name} <span className="text-xs">({ROLE_LABEL[h.by_role]})</span>
+                {h.note && <span className="ml-1">· {h.note}</span>}
+              </div>
+            </li>
+          ))}
+          {(!req.status_history || req.status_history.length === 0) && (
+            <li className="text-sm text-muted-foreground">Brak zmian statusu.</li>
+          )}
+        </ol>
+      </Card>
+
       {canManage && (
         <Card className="p-6 space-y-4">
           <h3 className="font-bold">Akcje zarządcy</h3>
@@ -142,7 +193,14 @@ export default function RequestDetail() {
               </Select>
             </div>
           </div>
-          <Button onClick={saveManager}>Zapisz zmiany</Button>
+          <div className="flex gap-2 flex-wrap">
+            <Button onClick={saveManager}>Zapisz zmiany</Button>
+            {canArchive && (
+              <Button variant="outline" onClick={archive}>
+                <Archive className="h-4 w-4 mr-2" />Archiwizuj
+              </Button>
+            )}
+          </div>
         </Card>
       )}
 

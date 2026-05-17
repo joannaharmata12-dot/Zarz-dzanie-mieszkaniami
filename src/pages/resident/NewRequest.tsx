@@ -30,19 +30,28 @@ export default function NewRequest() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !description.trim() || !location.trim() || !apartment || !userId) {
-      toast.error("Uzupełnij wszystkie wymagane pola");
+    const errs: string[] = [];
+    if (!apartment) errs.push("brak przypisanego mieszkania");
+    if (!title.trim()) errs.push("tytuł");
+    if (!description.trim()) errs.push("opis");
+    if (!category) errs.push("kategoria");
+    if (!location.trim()) errs.push("lokalizacja");
+    if (errs.length || !apartment || !userId) {
+      toast.error("Uzupełnij wymagane pola: " + errs.join(", "));
       return;
     }
     const number = nextRequestNumber(state.requests);
     const id = uid();
+    const now = new Date().toISOString();
+    const resName = state.profiles.find(p => p.id === userId)?.full_name || "Mieszkaniec";
     setState(s => ({
       ...s,
       requests: [{
         id, number, apartment_id: apartment.id, resident_id: userId, assigned_company_id: null,
         title, description, category, priority, status: "nowe", location, availability,
         source: "resident", scheduled_date: null, tech_note: null,
-        created_at: new Date().toISOString(), updated_at: new Date().toISOString(),
+        created_at: now, updated_at: now,
+        status_history: [{ at: now, from: null, to: "nowe", by_role: "resident", by_name: resName }],
       }, ...s.requests],
     }));
     if (manager) notify(setState, manager.id, "Nowe zgłoszenie", `Mieszkaniec utworzył zgłoszenie ${number}: ${title}`, "request");

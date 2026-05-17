@@ -56,6 +56,16 @@ export interface MaintenanceRequest {
   tech_note: string | null;
   created_at: string;
   updated_at: string;
+  status_history: StatusChange[];
+}
+
+export interface StatusChange {
+  at: string;
+  from: RequestStatus | null;
+  to: RequestStatus;
+  by_role: Role;
+  by_name: string;
+  note?: string;
 }
 
 export interface TechnicalEntry {
