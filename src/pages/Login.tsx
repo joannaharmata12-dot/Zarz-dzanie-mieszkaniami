@@ -5,11 +5,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Building2, Wrench, Sparkles, User2, ArrowRight } from "lucide-react";
 
-const roles: { role: Role; userId: string; name: string; icon: any; desc: string }[] = [
-  { role: "resident", userId: "u-res-1", name: "Mieszkaniec", icon: User2, desc: "Zgłaszanie usterek, śledzenie statusów, płatności, umowa." },
-  { role: "manager", userId: "u-mgr-1", name: "Zarządca", icon: Building2, desc: "Zarządzanie mieszkaniami, zgłoszeniami, płatnościami i wizytami." },
-  { role: "technical", userId: "u-tech-1", name: "Firma techniczna", icon: Wrench, desc: "Obsługa przypisanych napraw, terminy i notatki techniczne." },
-  { role: "cleaning", userId: "u-clean-1", name: "Firma sprzątająca", icon: Sparkles, desc: "Lista zleceń sprzątania i ich realizacja." },
+const roles: { role: Role; userId: string; name: string; profile: string; icon: any; desc: string }[] = [
+  { role: "resident", userId: "u-res-1", name: "Mieszkaniec", profile: "Anna Kowalska", icon: User2, desc: "Zgłaszanie usterek, śledzenie statusów, płatności, umowa." },
+  { role: "manager", userId: "u-mgr-1", name: "Zarządca", profile: "Jan Nowak", icon: Building2, desc: "Zarządzanie mieszkaniami, zgłoszeniami, płatnościami i wizytami." },
+  { role: "technical", userId: "u-tech-1", name: "Firma techniczna", profile: "TechFix", icon: Wrench, desc: "Obsługa przypisanych napraw, terminy i notatki techniczne." },
+  { role: "cleaning", userId: "u-clean-1", name: "Firma sprzątająca", profile: "CleanHome", icon: Sparkles, desc: "Lista zleceń sprzątania i ich realizacja." },
 ];
 
 export default function Login() {
@@ -62,6 +62,7 @@ export default function Login() {
                       {r.name}
                       <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition" />
                     </div>
+                    <div className="text-xs text-accent font-medium mt-0.5">Profil testowy: {r.profile}</div>
                     <div className="text-sm text-muted-foreground mt-1">{r.desc}</div>
                   </div>
                 </div>

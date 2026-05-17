@@ -32,12 +32,14 @@ export default function PaymentForm() {
     if (!dueDate) errs.push("termin");
     if (!description.trim()) errs.push("opis");
     if (errs.length || !apt || !apt.resident_id) { toast.error("Uzupełnij wymagane pola: " + errs.join(", ")); return; }
+    const now = new Date().toISOString();
     setState(s => ({
       ...s,
       payments: [{
         id: uid(), apartment_id: apt.id, resident_id: apt.resident_id!,
-        amount: amt, due_date: dueDate, status, description,
-        created_at: new Date().toISOString(),
+        amount: amt, due_date: dueDate, status, description, recurring: false,
+        status_history: [{ at: now, from: null, to: status, by_role: "manager", by_name: "Jan Nowak" }],
+        created_at: now,
       }, ...s.payments],
     }));
     notify(setState, apt.resident_id, "Nowa płatność", `Dodano płatność: ${description} (${amt} zł)`, "payment");

@@ -25,8 +25,14 @@ export default function NewRequest() {
   const [category, setCategory] = useState<Category>("hydraulika");
   const [location, setLocation] = useState("");
   const [availability, setAvailability] = useState("");
+  const [attachments, setAttachments] = useState<{ name: string; placeholder: true }[]>([]);
 
   const priority = PRIORITY_BY_CATEGORY[category];
+
+  const addAttachment = () => {
+    const n = attachments.length + 1;
+    setAttachments(a => [...a, { name: `zdjecie_${n}.jpg`, placeholder: true }]);
+  };
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +56,7 @@ export default function NewRequest() {
         id, number, apartment_id: apartment.id, resident_id: userId, assigned_company_id: null,
         title, description, category, priority, status: "nowe", location, availability,
         source: "resident", scheduled_date: null, tech_note: null,
+        attachments, settlement: null, reminders: [],
         created_at: now, updated_at: now,
         status_history: [{ at: now, from: null, to: "nowe", by_role: "resident", by_name: resName }],
       }, ...s.requests],
@@ -110,10 +117,16 @@ export default function NewRequest() {
           </div>
 
           <div className="space-y-2">
-            <Label>Załącznik (placeholder)</Label>
-            <div className="border-2 border-dashed rounded-lg p-6 text-center text-muted-foreground">
-              <ImageIcon className="h-8 w-8 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">Dodawanie zdjęć w przyszłej wersji</p>
+            <Label>Załączniki (placeholder)</Label>
+            <div className="border-2 border-dashed rounded-lg p-6 text-center text-muted-foreground space-y-3">
+              <ImageIcon className="h-8 w-8 mx-auto opacity-50" />
+              <p className="text-sm">Symulacja dodawania zdjęć — w MVP plik nie jest faktycznie zapisywany.</p>
+              <Button type="button" variant="outline" size="sm" onClick={addAttachment}>Dodaj zdjęcie</Button>
+              {attachments.length > 0 && (
+                <ul className="text-xs text-left mt-2 space-y-1">
+                  {attachments.map((a, i) => <li key={i} className="flex items-center justify-between bg-muted/40 rounded px-2 py-1"><span>{a.name}</span><button type="button" className="text-destructive" onClick={() => setAttachments(prev => prev.filter((_, j) => j !== i))}>usuń</button></li>)}
+                </ul>
+              )}
             </div>
           </div>
 
