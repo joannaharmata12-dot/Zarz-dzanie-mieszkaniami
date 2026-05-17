@@ -54,6 +54,7 @@ export const VisitBadge = ({ value }: { value: VisitStatus }) => {
     "przełożona": "bg-warning/15 text-warning border-warning/40",
     "zrealizowana": "bg-success/15 text-success border-success/40",
     "anulowana": "bg-destructive/10 text-destructive border-destructive/30",
+    "propozycja zmiany": "bg-warning/15 text-warning border-warning/40",
   };
   return <Badge variant="outline" className={cn("font-medium", map[value])}>{value}</Badge>;
 };
@@ -65,6 +66,7 @@ export const CleaningBadge = ({ value }: { value: CleaningStatus }) => {
     "w realizacji": "bg-warning/15 text-warning border-warning/40",
     "zakończone": "bg-success/15 text-success border-success/40",
     "anulowane": "bg-destructive/10 text-destructive border-destructive/30",
+    "propozycja zmiany": "bg-warning/15 text-warning border-warning/40",
   };
   return <Badge variant="outline" className={cn("font-medium", map[value])}>{value}</Badge>;
 };
