@@ -31,6 +31,11 @@ export const seedRequests: MaintenanceRequest[] = [
     category: "hydraulika", priority: "krytyczny", status: "w realizacji", location: "Łazienka",
     availability: "Pon-Pt po 16:00", source: "resident", scheduled_date: daysAhead(1),
     tech_note: "Wymiana syfonu zaplanowana.", created_at: daysAgo(3), updated_at: daysAgo(1),
+    status_history: [
+      { at: daysAgo(3), from: null, to: "nowe", by_role: "resident", by_name: "Anna Kowalska" },
+      { at: daysAgo(2), from: "nowe", to: "przypisane", by_role: "manager", by_name: "Jan Nowak", note: "Przypisano TechFix" },
+      { at: daysAgo(1), from: "przypisane", to: "w realizacji", by_role: "technical", by_name: "TechFix" },
+    ],
   },
   {
     id: "r-2", number: "ZG-2025-002", apartment_id: "a-2", resident_id: "u-res-2",
@@ -38,6 +43,7 @@ export const seedRequests: MaintenanceRequest[] = [
     category: "elektryka", priority: "wysoki", status: "nowe", location: "Kuchnia",
     availability: "Cały tydzień", source: "resident", scheduled_date: null, tech_note: null,
     created_at: daysAgo(1), updated_at: daysAgo(1),
+    status_history: [{ at: daysAgo(1), from: null, to: "nowe", by_role: "resident", by_name: "Piotr Nowak" }],
   },
   {
     id: "r-3", number: "ZG-2025-003", apartment_id: "a-3", resident_id: "u-res-3",
@@ -45,6 +51,11 @@ export const seedRequests: MaintenanceRequest[] = [
     category: "drzwi/okna", priority: "średni", status: "zaplanowane", location: "Salon",
     availability: "Weekendy", source: "resident", scheduled_date: daysAhead(4), tech_note: null,
     created_at: daysAgo(7), updated_at: daysAgo(2),
+    status_history: [
+      { at: daysAgo(7), from: null, to: "nowe", by_role: "resident", by_name: "Magdalena Zielińska" },
+      { at: daysAgo(5), from: "nowe", to: "przypisane", by_role: "manager", by_name: "Jan Nowak" },
+      { at: daysAgo(2), from: "przypisane", to: "zaplanowane", by_role: "technical", by_name: "TechFix" },
+    ],
   },
   {
     id: "r-4", number: "ZG-2025-004", apartment_id: "a-1", resident_id: "u-res-1",
@@ -52,6 +63,11 @@ export const seedRequests: MaintenanceRequest[] = [
     category: "ogrzewanie", priority: "wysoki", status: "zakończone", location: "Łazienka",
     availability: "Pon-Pt", source: "manual_manager", scheduled_date: daysAgo(20), tech_note: "Wymieniono filtr, ciśnienie OK.",
     created_at: daysAgo(30), updated_at: daysAgo(20),
+    status_history: [
+      { at: daysAgo(30), from: null, to: "nowe", by_role: "manager", by_name: "Jan Nowak", note: "Dodane ręcznie" },
+      { at: daysAgo(28), from: "nowe", to: "przypisane", by_role: "manager", by_name: "Jan Nowak" },
+      { at: daysAgo(20), from: "przypisane", to: "zakończone", by_role: "technical", by_name: "TechFix" },
+    ],
   },
 ];
 
@@ -62,8 +78,8 @@ export const seedTechEntries: TechnicalEntry[] = [
 ];
 
 export const seedPayments: Payment[] = [
-  { id: "p-1", apartment_id: "a-1", resident_id: "u-res-1", amount: 2800, due_date: daysAhead(5), status: "nierozliczona", description: "Czynsz – listopad", created_at: daysAgo(2) },
-  { id: "p-2", apartment_id: "a-1", resident_id: "u-res-1", amount: 2800, due_date: daysAhead(-15), status: "opłacona", description: "Czynsz – październik", created_at: daysAgo(35) },
+  { id: "p-1", apartment_id: "a-1", resident_id: "u-res-1", amount: 2800, due_date: daysAhead(-8), status: "zaległa", description: "Czynsz – październik", created_at: daysAgo(35) },
+  { id: "p-2", apartment_id: "a-1", resident_id: "u-res-1", amount: 2800, due_date: daysAhead(5), status: "nierozliczona", description: "Czynsz – listopad", created_at: daysAgo(2) },
   { id: "p-3", apartment_id: "a-2", resident_id: "u-res-2", amount: 3200, due_date: daysAhead(-10), status: "zaległa", description: "Czynsz – październik", created_at: daysAgo(40) },
   { id: "p-4", apartment_id: "a-3", resident_id: "u-res-3", amount: 2500, due_date: daysAhead(7), status: "nierozliczona", description: "Czynsz – listopad", created_at: daysAgo(1) },
 ];
