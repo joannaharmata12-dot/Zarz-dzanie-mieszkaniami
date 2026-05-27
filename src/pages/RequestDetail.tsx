@@ -17,7 +17,7 @@ import { toast } from "sonner";
 
 const STATUSES: RequestStatus[] = ["nowe", "przyjęte", "przypisane", "zaplanowane", "w realizacji", "oczekuje na mieszkańca", "zakończone", "anulowane", "archiwalne"];
 const PRIORITIES: Priority[] = ["krytyczny", "wysoki", "średni", "niski"];
-const PAYERS: SettlementPayer[] = ["mieszkaniec", "właściciel", "zarządca", "do decyzji"];
+const PAYERS: SettlementPayer[] = ["zarządca", "mieszkaniec"];
 const SET_STATUSES: SettlementStatus[] = ["nieustalone", "do zapłaty", "opłacone", "anulowane"];
 
 export default function RequestDetail() {
@@ -38,7 +38,7 @@ export default function RequestDetail() {
   const [scheduled, setScheduled] = useState(req.scheduled_date?.slice(0, 10) || "");
   const [note, setNote] = useState(req.tech_note || "");
   const [setAmount, setSetAmount] = useState(req.settlement?.amount.toString() || "");
-  const [setPayer, setSetPayer] = useState<SettlementPayer>(req.settlement?.payer || "do decyzji");
+  const [setPayer, setSetPayer] = useState<SettlementPayer>((req.settlement?.payer as SettlementPayer) === "mieszkaniec" ? "mieszkaniec" : "zarządca");
   const [setSettStatus, setSetSettStatus] = useState<SettlementStatus>(req.settlement?.status || "nieustalone");
 
   const [confirmAction, setConfirmAction] = useState<null | "archive" | "complete" | "cancel" | "reminder">(null);
@@ -161,8 +161,16 @@ export default function RequestDetail() {
             <div className="rounded-lg border p-3 space-y-2">
               <div className="text-xs uppercase text-muted-foreground">Załączniki ({req.attachments.length})</div>
               <div className="flex flex-wrap gap-2">
-                {req.attachments.map((a, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs bg-muted px-2 py-1 rounded"><ImageIcon className="h-3 w-3" />{a.name}</div>
+                {req.attachments.map((a: any, i) => (
+                  a.dataUrl ? (
+                    <a key={i} href={a.dataUrl} download={a.name}
+                       className="flex items-center gap-2 text-xs bg-muted hover:bg-accent-soft transition px-2 py-1.5 rounded">
+                      <ImageIcon className="h-3 w-3" />{a.name}
+                      {a.size && <span className="text-muted-foreground">({Math.round(a.size / 1024)} KB)</span>}
+                    </a>
+                  ) : (
+                    <div key={i} className="flex items-center gap-2 text-xs bg-muted px-2 py-1 rounded"><ImageIcon className="h-3 w-3" />{a.name}</div>
+                  )
                 ))}
               </div>
             </div>

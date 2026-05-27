@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Building2, Wrench, Sparkles, User2, CheckCircle2, Target, Layers, PlayCircle, Rocket, ShieldCheck } from "lucide-react";
+import { Building2, Wrench, Sparkles, User2, CheckCircle2, Target, Layers, PlayCircle, ShieldCheck } from "lucide-react";
 
 const roles = [
   { icon: User2, name: "Mieszkaniec", desc: "Zgłasza usterki, śledzi status, opłaca czynsz, podgląda umowę i wizyty." },
@@ -40,7 +40,7 @@ export default function About() {
     <div className="space-y-8 max-w-5xl">
       <div>
         <h1 className="text-3xl font-bold">O systemie PropertyCare</h1>
-        <p className="text-muted-foreground mt-1">Prototyp aplikacji webowej do zarządzania najmem i obsługą mieszkań.</p>
+        <p className="text-muted-foreground mt-1">Aplikacja webowa do zarządzania najmem i obsługą mieszkań.</p>
       </div>
 
       <Section icon={Target} title="Cel aplikacji">
@@ -126,20 +126,6 @@ export default function About() {
         </div>
       </Section>
 
-      <Section icon={Rocket} title="Planowane funkcje przyszłe">
-        <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2 list-disc pl-5 text-sm">
-          <li>Pełna autentykacja (e-mail + SSO)</li>
-          <li>Załączniki zdjęciowe do zgłoszeń</li>
-          <li>Integracja płatności online (BLIK / przelew)</li>
-          <li>Powiadomienia push i e-mail</li>
-          <li>Mobilna aplikacja dla firm serwisowych</li>
-          <li>Generowanie raportów PDF i eksport CSV</li>
-          <li>Kalendarz wizyt z synchronizacją iCal</li>
-          <li>API dla firm zewnętrznych</li>
-          <li>Moduł rozliczeń mediów (woda, prąd, gaz)</li>
-          <li>Czat mieszkaniec ↔ zarządca</li>
-        </ul>
-      </Section>
     </div>
   );
 }

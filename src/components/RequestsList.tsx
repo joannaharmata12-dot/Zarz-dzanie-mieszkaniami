@@ -6,7 +6,8 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PriorityBadge, StatusBadge } from "@/components/Badges";
-import { Search, ArrowRight } from "lucide-react";
+import { Search, ArrowRight, Plus, Paperclip } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   scope: "resident" | "manager" | "technical";
@@ -37,9 +38,14 @@ export default function RequestsList({ scope, basePath }: Props) {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Zgłoszenia</h1>
-        <p className="text-muted-foreground">{list.length} zgłoszeń</p>
+      <div className="flex items-end justify-between gap-3 flex-wrap">
+        <div>
+          <h1 className="text-3xl font-bold">Zgłoszenia</h1>
+          <p className="text-muted-foreground">{list.length} zgłoszeń</p>
+        </div>
+        {scope === "manager" && (
+          <Button asChild><Link to="/manager/requests/new"><Plus className="h-4 w-4 mr-2" />Nowe zgłoszenie</Link></Button>
+        )}
       </div>
 
       <Card className="p-4">
@@ -92,7 +98,12 @@ const Row = ({ r, basePath }: { r: MaintenanceRequest; basePath: string }) => {
     <Link to={`${basePath}/${r.id}`} className="flex items-center gap-4 px-5 py-4 hover:bg-muted/40 transition">
       <div className="font-mono text-xs text-muted-foreground w-28">{r.number}</div>
       <div className="flex-1 min-w-0">
-        <div className="font-medium truncate">{r.title}</div>
+        <div className="font-medium truncate flex items-center gap-2">
+          {r.title}
+          {r.attachments && r.attachments.length > 0 && (
+            <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground"><Paperclip className="h-3 w-3" />{r.attachments.length}</span>
+          )}
+        </div>
         <div className="text-xs text-muted-foreground">
           {apt ? `${apt.address}/${apt.apartment_number}, ${apt.city}` : ""} · {r.category} · {new Date(r.created_at).toLocaleDateString("pl-PL")}
         </div>

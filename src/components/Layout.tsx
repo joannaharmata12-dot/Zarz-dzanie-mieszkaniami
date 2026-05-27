@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Home, ClipboardList, Building2, Wrench, CreditCard, FileText, CalendarCheck,
-  Bell, Sparkles, LogOut, RotateCcw, Plus, Info, User2,
+  Bell, Sparkles, LogOut, Plus, Info, User2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -46,7 +46,7 @@ const navByRole = {
 } as const;
 
 export default function Layout() {
-  const { role, userId, state, logout, resetData } = useStore();
+  const { role, userId, state, logout } = useStore();
   const navigate = useNavigate();
 
   if (!role || !userId) { navigate("/"); return null; }
@@ -90,11 +90,8 @@ export default function Layout() {
               <div className="text-sidebar-foreground/60 truncate">{user?.email}</div>
             </div>
           </div>
-          <Button variant="ghost" size="sm" className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" onClick={resetData}>
-            <RotateCcw className="h-4 w-4 mr-2" /> Reset danych
-          </Button>
           <Button variant="ghost" size="sm" className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" onClick={() => { logout(); navigate("/"); }}>
-            <LogOut className="h-4 w-4 mr-2" /> Zmień rolę
+            <LogOut className="h-4 w-4 mr-2" /> Wyloguj
           </Button>
         </div>
       </aside>

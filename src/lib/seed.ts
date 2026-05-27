@@ -30,8 +30,8 @@ export const seedRequests: MaintenanceRequest[] = [
     assigned_company_id: "u-tech-1", title: "Zalanie łazienki", description: "Cieknie syfon pod umywalką, woda na podłodze.",
     category: "hydraulika", priority: "krytyczny", status: "w realizacji", location: "Łazienka",
     availability: "Pon-Pt po 16:00", source: "resident", scheduled_date: daysAhead(1),
-    tech_note: "Wymiana syfonu zaplanowana.", attachments: [{ name: "lazienka.jpg", placeholder: true }],
-    settlement: { amount: 250, payer: "właściciel", status: "do zapłaty" }, reminders: [],
+    tech_note: "Wymiana syfonu zaplanowana.", attachments: [],
+    settlement: { amount: 250, payer: "zarządca", status: "do zapłaty" }, reminders: [],
     created_at: daysAgo(3), updated_at: daysAgo(1),
     status_history: [
       { at: daysAgo(3), from: null, to: "nowe", by_role: "resident", by_name: "Anna Kowalska" },
@@ -116,14 +116,14 @@ export const seedVisits: Visit[] = [
 ];
 
 export const seedCleaning: CleaningOrder[] = [
-  { id: "c-1", apartment_id: "a-4", cleaning_company_id: "u-clean-1", description: "Sprzątanie po wyprowadzce – kompleksowe.", planned_date: daysAhead(2), status: "zaplanowane", note: null, status_history: [
+  { id: "c-1", apartment_id: "a-4", cleaning_company_id: "u-clean-1", description: "Sprzątanie po wyprowadzce: kompleksowe sprzątanie mieszkania.", planned_date: daysAhead(2), status: "zaplanowane", note: null, status_history: [
     { at: daysAgo(1), from: null, to: "zaplanowane", by_role: "manager", by_name: "Jan Nowak" },
   ], created_at: daysAgo(1) },
-  { id: "c-2", apartment_id: "a-5", cleaning_company_id: "u-clean-1", description: "Mycie okien i pranie wykładziny.", planned_date: daysAhead(-3), status: "zakończone", note: "Wykonano w komplecie.", status_history: [
+  { id: "c-2", apartment_id: "a-5", cleaning_company_id: "u-clean-1", description: "Sprzątanie po wyprowadzce: mycie okien i pranie wykładziny.", planned_date: daysAhead(-3), status: "zakończone", note: "Wykonano w komplecie.", status_history: [
     { at: daysAgo(10), from: null, to: "zaplanowane", by_role: "manager", by_name: "Jan Nowak" },
     { at: daysAgo(3), from: "zaplanowane", to: "zakończone", by_role: "cleaning", by_name: "CleanHome" },
   ], created_at: daysAgo(10) },
-  { id: "c-3", apartment_id: "a-2", cleaning_company_id: "u-clean-1", description: "Sprzątanie cykliczne klatki schodowej.", planned_date: daysAhead(1), status: "nowe", note: null, status_history: [
+  { id: "c-3", apartment_id: "a-2", cleaning_company_id: "u-clean-1", description: "Sprzątanie budynku: klatka schodowa.", planned_date: daysAhead(1), status: "nowe", note: null, status_history: [
     { at: today(), from: null, to: "nowe", by_role: "manager", by_name: "Jan Nowak" },
   ], created_at: today() },
 ];

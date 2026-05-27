@@ -41,7 +41,8 @@ export default function ManagerDashboard() {
           <h1 className="text-3xl font-bold">Witaj, {me?.full_name || "Zarządca"}</h1>
         </div>
         <div className="flex gap-2 flex-wrap">
-          <Button asChild><Link to="/manager/apartments/new"><Plus className="h-4 w-4 mr-2" />Dodaj mieszkanie</Link></Button>
+          <Button asChild><Link to="/manager/requests/new"><Plus className="h-4 w-4 mr-2" />Nowe zgłoszenie</Link></Button>
+          <Button variant="outline" asChild><Link to="/manager/apartments/new"><Plus className="h-4 w-4 mr-2" />Dodaj mieszkanie</Link></Button>
           <Button variant="outline" asChild><Link to="/manager/residents"><Plus className="h-4 w-4 mr-2" />Mieszkańcy</Link></Button>
           <Button variant="outline" asChild><Link to="/manager/payments/new"><Plus className="h-4 w-4 mr-2" />Dodaj płatność</Link></Button>
           <Button variant="outline" asChild><Link to="/manager/visits/new"><Plus className="h-4 w-4 mr-2" />Zaplanuj wizytę</Link></Button>

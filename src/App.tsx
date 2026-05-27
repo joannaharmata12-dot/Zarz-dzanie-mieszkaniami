@@ -23,6 +23,7 @@ import PaymentForm from "@/pages/manager/PaymentForm";
 import ManagerVisits from "@/pages/manager/Visits";
 import VisitForm from "@/pages/manager/VisitForm";
 import ManagerResidents from "@/pages/manager/Residents";
+import ManagerRequestForm from "@/pages/manager/RequestForm";
 
 import TechnicalDashboard from "@/pages/technical/Dashboard";
 import CleaningPanel from "@/pages/cleaning/Panel";
@@ -69,6 +70,7 @@ const App = () => (
               <Route path="/manager/apartments/:id" element={<ApartmentDetail />} />
               <Route path="/manager/apartments/:id/edit" element={<ApartmentForm />} />
               <Route path="/manager/requests" element={<RequestsList scope="manager" basePath="/manager/requests" />} />
+              <Route path="/manager/requests/new" element={<ManagerRequestForm />} />
               <Route path="/manager/requests/:id" element={<RequestDetail />} />
               <Route path="/manager/payments" element={<ManagerPayments />} />
               <Route path="/manager/payments/new" element={<PaymentForm />} />
