@@ -38,9 +38,14 @@ export default function RequestsList({ scope, basePath }: Props) {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Zgłoszenia</h1>
-        <p className="text-muted-foreground">{list.length} zgłoszeń</p>
+      <div className="flex items-end justify-between gap-3 flex-wrap">
+        <div>
+          <h1 className="text-3xl font-bold">Zgłoszenia</h1>
+          <p className="text-muted-foreground">{list.length} zgłoszeń</p>
+        </div>
+        {scope === "manager" && (
+          <Button asChild><Link to="/manager/requests/new"><Plus className="h-4 w-4 mr-2" />Nowe zgłoszenie</Link></Button>
+        )}
       </div>
 
       <Card className="p-4">
