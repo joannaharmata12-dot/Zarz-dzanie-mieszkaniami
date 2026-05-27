@@ -90,11 +90,8 @@ export default function Layout() {
               <div className="text-sidebar-foreground/60 truncate">{user?.email}</div>
             </div>
           </div>
-          <Button variant="ghost" size="sm" className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" onClick={resetData}>
-            <RotateCcw className="h-4 w-4 mr-2" /> Reset danych
-          </Button>
           <Button variant="ghost" size="sm" className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" onClick={() => { logout(); navigate("/"); }}>
-            <LogOut className="h-4 w-4 mr-2" /> Zmień rolę
+            <LogOut className="h-4 w-4 mr-2" /> Wyloguj
           </Button>
         </div>
       </aside>
