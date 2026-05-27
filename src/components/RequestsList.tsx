@@ -6,7 +6,8 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PriorityBadge, StatusBadge } from "@/components/Badges";
-import { Search, ArrowRight } from "lucide-react";
+import { Search, ArrowRight, Plus, Paperclip } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   scope: "resident" | "manager" | "technical";
