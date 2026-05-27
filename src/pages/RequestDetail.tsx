@@ -38,7 +38,7 @@ export default function RequestDetail() {
   const [scheduled, setScheduled] = useState(req.scheduled_date?.slice(0, 10) || "");
   const [note, setNote] = useState(req.tech_note || "");
   const [setAmount, setSetAmount] = useState(req.settlement?.amount.toString() || "");
-  const [setPayer, setSetPayer] = useState<SettlementPayer>(req.settlement?.payer || "do decyzji");
+  const [setPayer, setSetPayer] = useState<SettlementPayer>((req.settlement?.payer as SettlementPayer) === "mieszkaniec" ? "mieszkaniec" : "zarządca");
   const [setSettStatus, setSetSettStatus] = useState<SettlementStatus>(req.settlement?.status || "nieustalone");
 
   const [confirmAction, setConfirmAction] = useState<null | "archive" | "complete" | "cancel" | "reminder">(null);
