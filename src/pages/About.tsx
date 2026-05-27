@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Building2, Wrench, Sparkles, User2, CheckCircle2, Target, Layers, PlayCircle, Rocket, ShieldCheck } from "lucide-react";
+import { Building2, Wrench, Sparkles, User2, CheckCircle2, Target, Layers, PlayCircle, ShieldCheck } from "lucide-react";
 
 const roles = [
   { icon: User2, name: "Mieszkaniec", desc: "Zgłasza usterki, śledzi status, opłaca czynsz, podgląda umowę i wizyty." },
