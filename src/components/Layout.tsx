@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Home, ClipboardList, Building2, Wrench, CreditCard, FileText, CalendarCheck,
-  Bell, Sparkles, LogOut, RotateCcw, Plus, Info, User2,
+  Bell, Sparkles, LogOut, Plus, Info, User2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
