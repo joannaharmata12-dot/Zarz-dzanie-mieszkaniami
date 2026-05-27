@@ -17,7 +17,7 @@ import { toast } from "sonner";
 
 const STATUSES: RequestStatus[] = ["nowe", "przyjęte", "przypisane", "zaplanowane", "w realizacji", "oczekuje na mieszkańca", "zakończone", "anulowane", "archiwalne"];
 const PRIORITIES: Priority[] = ["krytyczny", "wysoki", "średni", "niski"];
-const PAYERS: SettlementPayer[] = ["mieszkaniec", "właściciel", "zarządca", "do decyzji"];
+const PAYERS: SettlementPayer[] = ["zarządca", "mieszkaniec"];
 const SET_STATUSES: SettlementStatus[] = ["nieustalone", "do zapłaty", "opłacone", "anulowane"];
 
 export default function RequestDetail() {
