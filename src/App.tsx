@@ -23,6 +23,7 @@ import PaymentForm from "@/pages/manager/PaymentForm";
 import ManagerVisits from "@/pages/manager/Visits";
 import VisitForm from "@/pages/manager/VisitForm";
 import ManagerResidents from "@/pages/manager/Residents";
+import ManagerRequestForm from "@/pages/manager/RequestForm";
 
 import TechnicalDashboard from "@/pages/technical/Dashboard";
 import CleaningPanel from "@/pages/cleaning/Panel";
