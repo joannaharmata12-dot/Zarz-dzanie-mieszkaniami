@@ -40,7 +40,7 @@ export default function About() {
     <div className="space-y-8 max-w-5xl">
       <div>
         <h1 className="text-3xl font-bold">O systemie PropertyCare</h1>
-        <p className="text-muted-foreground mt-1">Prototyp aplikacji webowej do zarządzania najmem i obsługą mieszkań.</p>
+        <p className="text-muted-foreground mt-1">Aplikacja webowa do zarządzania najmem i obsługą mieszkań.</p>
       </div>
 
       <Section icon={Target} title="Cel aplikacji">
