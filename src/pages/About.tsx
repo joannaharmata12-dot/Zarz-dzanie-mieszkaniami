@@ -126,20 +126,6 @@ export default function About() {
         </div>
       </Section>
 
-      <Section icon={Rocket} title="Planowane funkcje przyszłe">
-        <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2 list-disc pl-5 text-sm">
-          <li>Pełna autentykacja (e-mail + SSO)</li>
-          <li>Załączniki zdjęciowe do zgłoszeń</li>
-          <li>Integracja płatności online (BLIK / przelew)</li>
-          <li>Powiadomienia push i e-mail</li>
-          <li>Mobilna aplikacja dla firm serwisowych</li>
-          <li>Generowanie raportów PDF i eksport CSV</li>
-          <li>Kalendarz wizyt z synchronizacją iCal</li>
-          <li>API dla firm zewnętrznych</li>
-          <li>Moduł rozliczeń mediów (woda, prąd, gaz)</li>
-          <li>Czat mieszkaniec ↔ zarządca</li>
-        </ul>
-      </Section>
     </div>
   );
 }
