@@ -43,7 +43,9 @@ export interface Apartment {
 
 export interface Attachment {
   name: string;
-  placeholder: true;
+  type: string;
+  size: number;
+  dataUrl: string;
 }
 
 export interface Settlement {
