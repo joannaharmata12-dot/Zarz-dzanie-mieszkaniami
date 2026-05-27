@@ -70,6 +70,7 @@ const App = () => (
               <Route path="/manager/apartments/:id" element={<ApartmentDetail />} />
               <Route path="/manager/apartments/:id/edit" element={<ApartmentForm />} />
               <Route path="/manager/requests" element={<RequestsList scope="manager" basePath="/manager/requests" />} />
+              <Route path="/manager/requests/new" element={<ManagerRequestForm />} />
               <Route path="/manager/requests/:id" element={<RequestDetail />} />
               <Route path="/manager/payments" element={<ManagerPayments />} />
               <Route path="/manager/payments/new" element={<PaymentForm />} />
