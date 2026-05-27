@@ -116,14 +116,14 @@ export const seedVisits: Visit[] = [
 ];
 
 export const seedCleaning: CleaningOrder[] = [
-  { id: "c-1", apartment_id: "a-4", cleaning_company_id: "u-clean-1", description: "Sprzątanie po wyprowadzce – kompleksowe.", planned_date: daysAhead(2), status: "zaplanowane", note: null, status_history: [
+  { id: "c-1", apartment_id: "a-4", cleaning_company_id: "u-clean-1", description: "Sprzątanie po wyprowadzce: kompleksowe sprzątanie mieszkania.", planned_date: daysAhead(2), status: "zaplanowane", note: null, status_history: [
     { at: daysAgo(1), from: null, to: "zaplanowane", by_role: "manager", by_name: "Jan Nowak" },
   ], created_at: daysAgo(1) },
-  { id: "c-2", apartment_id: "a-5", cleaning_company_id: "u-clean-1", description: "Mycie okien i pranie wykładziny.", planned_date: daysAhead(-3), status: "zakończone", note: "Wykonano w komplecie.", status_history: [
+  { id: "c-2", apartment_id: "a-5", cleaning_company_id: "u-clean-1", description: "Sprzątanie po wyprowadzce: mycie okien i pranie wykładziny.", planned_date: daysAhead(-3), status: "zakończone", note: "Wykonano w komplecie.", status_history: [
     { at: daysAgo(10), from: null, to: "zaplanowane", by_role: "manager", by_name: "Jan Nowak" },
     { at: daysAgo(3), from: "zaplanowane", to: "zakończone", by_role: "cleaning", by_name: "CleanHome" },
   ], created_at: daysAgo(10) },
-  { id: "c-3", apartment_id: "a-2", cleaning_company_id: "u-clean-1", description: "Sprzątanie cykliczne klatki schodowej.", planned_date: daysAhead(1), status: "nowe", note: null, status_history: [
+  { id: "c-3", apartment_id: "a-2", cleaning_company_id: "u-clean-1", description: "Sprzątanie budynku: klatka schodowa.", planned_date: daysAhead(1), status: "nowe", note: null, status_history: [
     { at: today(), from: null, to: "nowe", by_role: "manager", by_name: "Jan Nowak" },
   ], created_at: today() },
 ];
