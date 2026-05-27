@@ -30,8 +30,8 @@ export const seedRequests: MaintenanceRequest[] = [
     assigned_company_id: "u-tech-1", title: "Zalanie łazienki", description: "Cieknie syfon pod umywalką, woda na podłodze.",
     category: "hydraulika", priority: "krytyczny", status: "w realizacji", location: "Łazienka",
     availability: "Pon-Pt po 16:00", source: "resident", scheduled_date: daysAhead(1),
-    tech_note: "Wymiana syfonu zaplanowana.", attachments: [{ name: "lazienka.jpg", placeholder: true }],
-    settlement: { amount: 250, payer: "właściciel", status: "do zapłaty" }, reminders: [],
+    tech_note: "Wymiana syfonu zaplanowana.", attachments: [],
+    settlement: { amount: 250, payer: "zarządca", status: "do zapłaty" }, reminders: [],
     created_at: daysAgo(3), updated_at: daysAgo(1),
     status_history: [
       { at: daysAgo(3), from: null, to: "nowe", by_role: "resident", by_name: "Anna Kowalska" },
