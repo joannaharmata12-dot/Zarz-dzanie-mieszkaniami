@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore, uid, nextRequestNumber, notify } from "@/lib/store";
-import { PRIORITY_BY_CATEGORY, type Category } from "@/lib/types";
+import { PRIORITY_BY_CATEGORY, type Attachment, type Category } from "@/lib/types";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,28 +10,47 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { PriorityBadge } from "@/components/Badges";
-import { Image as ImageIcon } from "lucide-react";
+import { Paperclip, X, FileIcon } from "lucide-react";
 
 const categories: Category[] = ["hydraulika", "elektryka", "ogrzewanie", "drzwi/okna", "sprzęt AGD", "inne"];
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+const readFile = (f: File): Promise<Attachment> =>
+  new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve({ name: f.name, type: f.type, size: f.size, dataUrl: r.result as string });
+    r.onerror = reject;
+    r.readAsDataURL(f);
+  });
 
 export default function NewRequest() {
   const { state, setState, userId } = useStore();
   const nav = useNavigate();
   const apartment = state.apartments.find(a => a.resident_id === userId);
   const manager = state.profiles.find(p => p.role === "manager");
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState<Category>("hydraulika");
   const [location, setLocation] = useState("");
   const [availability, setAvailability] = useState("");
-  const [attachments, setAttachments] = useState<{ name: string; placeholder: true }[]>([]);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
 
   const priority = PRIORITY_BY_CATEGORY[category];
 
-  const addAttachment = () => {
-    const n = attachments.length + 1;
-    setAttachments(a => [...a, { name: `zdjecie_${n}.jpg`, placeholder: true }]);
+  const onPick = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const ok: Attachment[] = [];
+    for (const f of files) {
+      if (f.size > MAX_FILE_SIZE) {
+        toast.error(`Plik ${f.name} przekracza 5 MB`);
+        continue;
+      }
+      ok.push(await readFile(f));
+    }
+    setAttachments(a => [...a, ...ok]);
+    if (fileRef.current) fileRef.current.value = "";
   };
 
   const submit = (e: React.FormEvent) => {
@@ -40,7 +59,6 @@ export default function NewRequest() {
     if (!apartment) errs.push("brak przypisanego mieszkania");
     if (!title.trim()) errs.push("tytuł");
     if (!description.trim()) errs.push("opis");
-    if (!category) errs.push("kategoria");
     if (!location.trim()) errs.push("lokalizacja");
     if (errs.length || !apartment || !userId) {
       toast.error("Uzupełnij wymagane pola: " + errs.join(", "));
@@ -117,14 +135,22 @@ export default function NewRequest() {
           </div>
 
           <div className="space-y-2">
-            <Label>Załączniki (placeholder)</Label>
-            <div className="border-2 border-dashed rounded-lg p-6 text-center text-muted-foreground space-y-3">
-              <ImageIcon className="h-8 w-8 mx-auto opacity-50" />
-              <p className="text-sm">Symulacja dodawania zdjęć — w MVP plik nie jest faktycznie zapisywany.</p>
-              <Button type="button" variant="outline" size="sm" onClick={addAttachment}>Dodaj zdjęcie</Button>
+            <Label>Załączniki</Label>
+            <input ref={fileRef} type="file" multiple accept="image/*,application/pdf" onChange={onPick} className="hidden" />
+            <div className="border-2 border-dashed rounded-lg p-6 text-center space-y-3">
+              <Paperclip className="h-8 w-8 mx-auto text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">Dodaj zdjęcia lub dokumenty (maks. 5 MB każdy).</p>
+              <Button type="button" variant="outline" size="sm" onClick={() => fileRef.current?.click()}>
+                Wybierz pliki
+              </Button>
               {attachments.length > 0 && (
                 <ul className="text-xs text-left mt-2 space-y-1">
-                  {attachments.map((a, i) => <li key={i} className="flex items-center justify-between bg-muted/40 rounded px-2 py-1"><span>{a.name}</span><button type="button" className="text-destructive" onClick={() => setAttachments(prev => prev.filter((_, j) => j !== i))}>usuń</button></li>)}
+                  {attachments.map((a, i) => (
+                    <li key={i} className="flex items-center justify-between bg-muted/40 rounded px-2 py-1.5">
+                      <span className="flex items-center gap-2 truncate"><FileIcon className="h-3 w-3 shrink-0" />{a.name} <span className="text-muted-foreground">({Math.round(a.size / 1024)} KB)</span></span>
+                      <button type="button" className="text-destructive shrink-0" onClick={() => setAttachments(p => p.filter((_, j) => j !== i))}><X className="h-3 w-3" /></button>
+                    </li>
+                  ))}
                 </ul>
               )}
             </div>
