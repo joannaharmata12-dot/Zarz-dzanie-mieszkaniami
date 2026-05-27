@@ -46,7 +46,7 @@ const navByRole = {
 } as const;
 
 export default function Layout() {
-  const { role, userId, state, logout, resetData } = useStore();
+  const { role, userId, state, logout } = useStore();
   const navigate = useNavigate();
 
   if (!role || !userId) { navigate("/"); return null; }
