@@ -18,7 +18,7 @@ export type LeaseRequestStatus = "brak" | "nowy" | "w analizie" | "zaakceptowany
 export type VisitStatus = "zaplanowana" | "przełożona" | "zrealizowana" | "anulowana" | "propozycja zmiany";
 export type CleaningStatus = "nowe" | "zaplanowane" | "w realizacji" | "zakończone" | "anulowane" | "propozycja zmiany";
 export type TechEntryType = "usterka" | "naprawa" | "przegląd" | "notatka";
-export type SettlementPayer = "mieszkaniec" | "właściciel" | "zarządca" | "do decyzji";
+export type SettlementPayer = "mieszkaniec" | "zarządca";
 export type SettlementStatus = "nieustalone" | "do zapłaty" | "opłacone" | "anulowane";
 
 export interface Profile {
