@@ -24,6 +24,8 @@ export default function ManagerVisits() {
   const [date, setDate] = useState(""); const [time, setTime] = useState("");
   const [status, setStatus] = useState<VisitStatus>("zaplanowana");
   const [cancelConfirm, setCancelConfirm] = useState(false);
+  const [proposeOpen, setProposeOpen] = useState(false);
+  const [propDate, setPropDate] = useState("");
 
   const openVisit = (v: Visit) => {
     setSelected(v); setDate(v.date.slice(0, 10)); setTime(v.time); setStatus(v.status);
@@ -50,15 +52,22 @@ export default function ManagerVisits() {
 
   const acceptProposed = () => {
     if (!selected?.alternative_date) return;
-    apply({ date: selected.alternative_date, status: "zaplanowana", alternative_date: null }, "zaplanowana", "Zaakceptowano propozycję mieszkańca");
+    apply({ date: selected.alternative_date, status: "zaplanowana", alternative_date: null, proposed_by_resident: null }, "zaplanowana", "Zaakceptowano propozycję mieszkańca");
     toast.success("Termin zaakceptowany");
     setSelected(null);
   };
 
   const rejectProposed = () => {
-    apply({ status: "zaplanowana", alternative_date: null }, "zaplanowana", "Odrzucono propozycję mieszkańca");
+    apply({ status: "zaplanowana", alternative_date: null, proposed_by_resident: null }, "zaplanowana", "Odrzucono propozycję mieszkańca");
     toast.success("Propozycja odrzucona");
     setSelected(null);
+  };
+
+  const sendCounterProposal = () => {
+    if (!selected || !propDate) { toast.error("Wybierz datę"); return; }
+    apply({ status: "propozycja zmiany", alternative_date: propDate, proposed_by_resident: null }, "propozycja zmiany", `Zarządca proponuje ${new Date(propDate).toLocaleDateString("pl-PL")}`);
+    toast.success("Propozycja wysłana do mieszkańca");
+    setProposeOpen(false); setPropDate(""); setSelected(null);
   };
 
   return (
