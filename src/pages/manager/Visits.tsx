@@ -148,6 +148,17 @@ export default function ManagerVisits() {
         confirmLabel="Anuluj wizytę"
         onConfirm={() => { apply({ status: "anulowana" }, "anulowana", "Anulowane przez zarządcę"); toast.success("Wizyta anulowana"); setCancelConfirm(false); setSelected(null); }}
       />
+
+      <Dialog open={proposeOpen} onOpenChange={setProposeOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Zaproponuj inny termin</DialogTitle></DialogHeader>
+          <div className="space-y-2"><Label>Nowa proponowana data *</Label><Input type="date" value={propDate} onChange={e => setPropDate(e.target.value)} /></div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setProposeOpen(false)}>Anuluj</Button>
+            <Button onClick={sendCounterProposal}>Wyślij propozycję</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
