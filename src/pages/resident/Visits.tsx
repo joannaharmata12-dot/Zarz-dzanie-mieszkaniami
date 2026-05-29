@@ -70,12 +70,39 @@ export default function ResidentVisits() {
                 <Detail label="Osoba kontaktowa" value={selected.inspector} />
                 <Detail label="Telefon" value={selected.contact_phone || "—"} />
                 <Detail label="Mieszkanie" value={apt ? `${apt.address}/${apt.apartment_number}` : "—"} />
-                {selected.alternative_date && <Detail label="Twoja propozycja" value={new Date(selected.alternative_date).toLocaleDateString("pl-PL")} />}
               </div>
-              {(selected.status === "zaplanowana" || selected.status === "propozycja zmiany" || selected.status === "przełożona") && (
+
+              {selected.status === "propozycja zmiany" && selected.alternative_date && !selected.proposed_by_resident && (
+                <Card className="p-3 border-warning/40 bg-warning/10 space-y-2">
+                  <div>Zarządca proponuje termin: <span className="font-bold">{new Date(selected.alternative_date).toLocaleDateString("pl-PL")}</span></div>
+                  <div className="flex gap-2 flex-wrap">
+                    <Button size="sm" onClick={() => setAcceptConfirm(true)}>Zaakceptuj</Button>
+                    <Button size="sm" variant="outline" onClick={() => {
+                      updateVisit(selected, { status: "zaplanowana", alternative_date: null }, "zaplanowana", "Mieszkaniec odrzucił propozycję zarządcy");
+                      toast.success("Propozycja odrzucona");
+                      setSelected(null);
+                    }}>Odrzuć</Button>
+                    <Button size="sm" variant="outline" onClick={() => setProposeOpen(true)}>Zaproponuj inny termin</Button>
+                  </div>
+                </Card>
+              )}
+
+              {selected.status === "propozycja zmiany" && selected.proposed_by_resident && (
+                <Card className="p-3 border-info/40 bg-info/10 space-y-1">
+                  <div>Twoja propozycja terminu: <span className="font-bold">{new Date(selected.proposed_by_resident).toLocaleDateString("pl-PL")}</span></div>
+                  <div className="text-xs text-muted-foreground">Oczekiwanie na decyzję zarządcy.</div>
+                </Card>
+              )}
+
+              {(selected.status === "zaplanowana" || selected.status === "przełożona") && (
                 <div className="flex gap-2 flex-wrap pt-3 border-t">
-                  <Button size="sm" onClick={() => setAcceptConfirm(true)}>Zaakceptuj termin</Button>
+                  <Button size="sm" onClick={() => setAcceptConfirm(true)}>Potwierdź termin</Button>
                   <Button size="sm" variant="outline" onClick={() => setProposeOpen(true)}>Zaproponuj inny termin</Button>
+                  <Button size="sm" variant="outline" onClick={() => setCancelConfirm(true)}>Anuluj wizytę</Button>
+                </div>
+              )}
+              {selected.status === "propozycja zmiany" && (
+                <div className="pt-3 border-t">
                   <Button size="sm" variant="outline" onClick={() => setCancelConfirm(true)}>Anuluj wizytę</Button>
                 </div>
               )}
