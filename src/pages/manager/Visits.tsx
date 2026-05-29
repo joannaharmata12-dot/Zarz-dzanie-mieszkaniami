@@ -97,14 +97,26 @@ export default function ManagerVisits() {
           <DialogHeader><DialogTitle>Edycja wizyty</DialogTitle></DialogHeader>
           {selected && (
             <div className="space-y-3 text-sm">
-              {selected.status === "propozycja zmiany" && selected.alternative_date && (
+              {selected.status === "propozycja zmiany" && selected.alternative_date && selected.proposed_by_resident && (
                 <Card className="p-3 border-warning/40 bg-warning/10 space-y-2">
-                  <div>Mieszkaniec proponuje: <span className="font-bold">{new Date(selected.alternative_date).toLocaleDateString("pl-PL")}</span></div>
-                  <div className="flex gap-2">
+                  <div>Mieszkaniec proponuje termin: <span className="font-bold">{new Date(selected.alternative_date).toLocaleDateString("pl-PL")}</span></div>
+                  <div className="flex gap-2 flex-wrap">
                     <Button size="sm" onClick={acceptProposed}>Zaakceptuj</Button>
                     <Button size="sm" variant="outline" onClick={rejectProposed}>Odrzuć</Button>
+                    <Button size="sm" variant="outline" onClick={() => setProposeOpen(true)}>Zaproponuj inny termin</Button>
                   </div>
                 </Card>
+              )}
+              {selected.status === "propozycja zmiany" && selected.alternative_date && !selected.proposed_by_resident && (
+                <Card className="p-3 border-info/40 bg-info/10 space-y-1">
+                  <div>Twoja propozycja terminu: <span className="font-bold">{new Date(selected.alternative_date).toLocaleDateString("pl-PL")}</span></div>
+                  <div className="text-xs text-muted-foreground">Oczekiwanie na decyzję mieszkańca.</div>
+                </Card>
+              )}
+              {selected.status !== "propozycja zmiany" && selected.status !== "anulowana" && selected.status !== "zrealizowana" && (
+                <div>
+                  <Button size="sm" variant="outline" onClick={() => setProposeOpen(true)}>Zaproponuj inny termin</Button>
+                </div>
               )}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2"><Label>Data</Label><Input type="date" value={date} onChange={e => setDate(e.target.value)} /></div>
