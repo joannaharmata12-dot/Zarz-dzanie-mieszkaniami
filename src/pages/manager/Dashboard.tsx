@@ -28,7 +28,7 @@ export default function ManagerDashboard() {
     ...newReq.map(r => ({ key: `req-${r.id}`, label: `Nowe zgłoszenie ${r.number}: ${r.title}`, to: `/manager/requests/${r.id}`, badge: <StatusBadge value={r.status} /> })),
     ...critical.map(r => ({ key: `crit-${r.id}`, label: `Krytyczne: ${r.title}`, to: `/manager/requests/${r.id}`, badge: <PriorityBadge value={r.priority} /> })),
     ...overdue.map(p => ({ key: `pay-${p.id}`, label: `Zaległa płatność: ${p.description} (${p.amount.toFixed(2)} zł)`, to: `/manager/payments`, badge: <PaymentBadge value={p.status} /> })),
-    ...visitProposals.map(v => ({ key: `vis-${v.id}`, label: `Propozycja zmiany terminu wizyty (${v.purpose})`, to: `/manager/visits`, badge: <VisitBadge value={v.status} /> })),
+    ...visitProposals.map(v => ({ key: `vis-${v.id}`, label: `Propozycja zmiany terminu wizyty: ${v.purpose} → ${v.alternative_date ? new Date(v.alternative_date).toLocaleDateString("pl-PL") : ""}`, to: `/manager/visits`, badge: <VisitBadge value={v.status} /> })),
     ...cleaningProposals.map(c => ({ key: `cln-${c.id}`, label: `Propozycja zmiany terminu sprzątania`, to: `/cleaning`, badge: null })),
     ...leaseRequests.map(l => ({ key: `lse-${l.id}`, label: `Wniosek najmu: ${l.request_type}`, to: `/manager/apartments/${l.apartment_id}`, badge: <LeaseRequestBadge value={l.request_status} /> })),
   ];
