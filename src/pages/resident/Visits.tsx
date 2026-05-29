@@ -137,7 +137,10 @@ export default function ResidentVisits() {
         confirmLabel="Akceptuję"
         onConfirm={() => {
           if (!selected) return;
-          updateVisit(selected, { status: "zaplanowana", alternative_date: null }, "zaplanowana", "Mieszkaniec zaakceptował termin");
+          // jeśli zarządca zaproponował nowy termin – zaakceptowanie przesuwa wizytę na nową datę
+          const newDate = (selected.status === "propozycja zmiany" && selected.alternative_date && !selected.proposed_by_resident)
+            ? selected.alternative_date : selected.date;
+          updateVisit(selected, { status: "zaplanowana", date: newDate, alternative_date: null, proposed_by_resident: null }, "zaplanowana", "Mieszkaniec zaakceptował termin");
           toast.success("Termin zaakceptowany");
           setAcceptConfirm(false); setSelected(null);
         }}
