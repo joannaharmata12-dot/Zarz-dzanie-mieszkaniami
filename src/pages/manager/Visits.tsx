@@ -24,6 +24,8 @@ export default function ManagerVisits() {
   const [date, setDate] = useState(""); const [time, setTime] = useState("");
   const [status, setStatus] = useState<VisitStatus>("zaplanowana");
   const [cancelConfirm, setCancelConfirm] = useState(false);
+  const [proposeOpen, setProposeOpen] = useState(false);
+  const [propDate, setPropDate] = useState("");
 
   const openVisit = (v: Visit) => {
     setSelected(v); setDate(v.date.slice(0, 10)); setTime(v.time); setStatus(v.status);
@@ -50,15 +52,22 @@ export default function ManagerVisits() {
 
   const acceptProposed = () => {
     if (!selected?.alternative_date) return;
-    apply({ date: selected.alternative_date, status: "zaplanowana", alternative_date: null }, "zaplanowana", "Zaakceptowano propozycję mieszkańca");
+    apply({ date: selected.alternative_date, status: "zaplanowana", alternative_date: null, proposed_by_resident: null }, "zaplanowana", "Zaakceptowano propozycję mieszkańca");
     toast.success("Termin zaakceptowany");
     setSelected(null);
   };
 
   const rejectProposed = () => {
-    apply({ status: "zaplanowana", alternative_date: null }, "zaplanowana", "Odrzucono propozycję mieszkańca");
+    apply({ status: "zaplanowana", alternative_date: null, proposed_by_resident: null }, "zaplanowana", "Odrzucono propozycję mieszkańca");
     toast.success("Propozycja odrzucona");
     setSelected(null);
+  };
+
+  const sendCounterProposal = () => {
+    if (!selected || !propDate) { toast.error("Wybierz datę"); return; }
+    apply({ status: "propozycja zmiany", alternative_date: propDate, proposed_by_resident: null }, "propozycja zmiany", `Zarządca proponuje ${new Date(propDate).toLocaleDateString("pl-PL")}`);
+    toast.success("Propozycja wysłana do mieszkańca");
+    setProposeOpen(false); setPropDate(""); setSelected(null);
   };
 
   return (
@@ -88,14 +97,26 @@ export default function ManagerVisits() {
           <DialogHeader><DialogTitle>Edycja wizyty</DialogTitle></DialogHeader>
           {selected && (
             <div className="space-y-3 text-sm">
-              {selected.status === "propozycja zmiany" && selected.alternative_date && (
+              {selected.status === "propozycja zmiany" && selected.alternative_date && selected.proposed_by_resident && (
                 <Card className="p-3 border-warning/40 bg-warning/10 space-y-2">
-                  <div>Mieszkaniec proponuje: <span className="font-bold">{new Date(selected.alternative_date).toLocaleDateString("pl-PL")}</span></div>
-                  <div className="flex gap-2">
+                  <div>Mieszkaniec proponuje termin: <span className="font-bold">{new Date(selected.alternative_date).toLocaleDateString("pl-PL")}</span></div>
+                  <div className="flex gap-2 flex-wrap">
                     <Button size="sm" onClick={acceptProposed}>Zaakceptuj</Button>
                     <Button size="sm" variant="outline" onClick={rejectProposed}>Odrzuć</Button>
+                    <Button size="sm" variant="outline" onClick={() => setProposeOpen(true)}>Zaproponuj inny termin</Button>
                   </div>
                 </Card>
+              )}
+              {selected.status === "propozycja zmiany" && selected.alternative_date && !selected.proposed_by_resident && (
+                <Card className="p-3 border-info/40 bg-info/10 space-y-1">
+                  <div>Twoja propozycja terminu: <span className="font-bold">{new Date(selected.alternative_date).toLocaleDateString("pl-PL")}</span></div>
+                  <div className="text-xs text-muted-foreground">Oczekiwanie na decyzję mieszkańca.</div>
+                </Card>
+              )}
+              {selected.status !== "propozycja zmiany" && selected.status !== "anulowana" && selected.status !== "zrealizowana" && (
+                <div>
+                  <Button size="sm" variant="outline" onClick={() => setProposeOpen(true)}>Zaproponuj inny termin</Button>
+                </div>
               )}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2"><Label>Data</Label><Input type="date" value={date} onChange={e => setDate(e.target.value)} /></div>
@@ -127,6 +148,17 @@ export default function ManagerVisits() {
         confirmLabel="Anuluj wizytę"
         onConfirm={() => { apply({ status: "anulowana" }, "anulowana", "Anulowane przez zarządcę"); toast.success("Wizyta anulowana"); setCancelConfirm(false); setSelected(null); }}
       />
+
+      <Dialog open={proposeOpen} onOpenChange={setProposeOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Zaproponuj inny termin</DialogTitle></DialogHeader>
+          <div className="space-y-2"><Label>Nowa proponowana data *</Label><Input type="date" value={propDate} onChange={e => setPropDate(e.target.value)} /></div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setProposeOpen(false)}>Anuluj</Button>
+            <Button onClick={sendCounterProposal}>Wyślij propozycję</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
